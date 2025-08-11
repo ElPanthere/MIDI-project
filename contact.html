@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Contact & devis — Panthère Informatique</title>
+  <meta name="description" content="Demandez un devis gratuit pour votre réparation ou dépannage."/>
+  <meta property="og:title" content="Contact & devis — Panthère Informatique"/>
+  <meta property="og:description" content="Demandez un devis gratuit pour votre réparation ou dépannage."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="assets/img/logo.svg"/>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <script defer src="assets/js/main.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LocalBusiness", "name": "Panthère Informatique", "image": "assets/img/logo.svg", "description": "Réparation d'ordinateurs, assistance et dépannage informatique à domicile et en atelier. PC, Mac, portables et tours.", "address": {"@type": "PostalAddress", "streetAddress": "4 A Rue Gustave Eiffel, 33380 Mios", "addressLocality": "Mios", "postalCode": "33380", "addressCountry": "FR"}, "email": "montagespanthere@gmail.com", "telephone": "+33 7 56 95 73 55", "url": "https://panthere-informatique.fr", "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "08:00", "closes": "20:00"}}</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://panthere-informatique.fr/index.html"}, {"@type": "ListItem", "position": 2, "name": "Contact", "item": "https://panthere-informatique.fr/contact.html"}]}
+</script>
+</head>
+
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo" aria-label="Accueil">
+      <img src="assets/img/logo.svg" alt="" width="34" height="34"/>
+      <span class="logo-title">Panthère Informatique</span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links">☰</button>
+    <div id="nav-links" class="nav-links" role="navigation" aria-label="Navigation principale">
+      <button class="theme-toggle" type="button"><span class="icon-wrap"><span class="sun">☀️</span><span class="moon">🌙</span></span><span class="theme-label" style="display:none">Toggle theme</span></button>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#tarifs">Tarifs</a>
+      <a href="about.html">À propos</a>
+      <a href="contact.html" class="btn">Demander un devis</a>
+    </div>
+  </div>
+</nav>
+
+<section class="container">
+  <h2>Contact</h2>
+  <p class="section-lead">Décrivez votre problème, on revient vers vous rapidement.</p>
+  <form id="contact-form" method="POST" action="contact.php" class="card reveal" novalidate>
+    <div class="form-grid">
+      <div>
+        <label for="name">Nom</label>
+        <input required type="text" id="name" name="name" autocomplete="name"/>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input required type="email" id="email" name="email" autocomplete="email"/>
+      </div>
+      <div>
+        <label for="phone">Téléphone</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel"/>
+      </div>
+      <div>
+        <label for="subject">Objet</label>
+        <input type="text" id="subject" name="subject" placeholder="Ex: PC lent / écran cassé"/>
+      </div>
+      <div class="full">
+        <label for="message">Message</label>
+        <textarea required id="message" name="message" rows="6" placeholder="Expliquez le problème…"></textarea>
+      </div>
+      <div style="display:none">
+        <label for="website">Site web (laisser vide)</label>
+        <input type="text" id="website" name="website"/>
+      </div>
+      <div class="full">
+        <label style="display:flex; gap:10px; align-items:center">
+          <input type="checkbox" id="consent" name="consent" required/>
+          J’accepte la <a href="privacy.html" target="_blank" rel="noopener">politique de confidentialité</a>.
+        </label>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; margin-top:10px">
+      <button class="btn" type="submit">Envoyer la demande</button>
+      <a class="btn secondary" href="tel:+33756957355">Appeler</a>
+    </div>
+  </form>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo">
+        <img src="assets/img/logo.svg" alt="" width="28" height="28"/>
+        <strong>Panthère Informatique</strong>
+      </div>
+      <p class="tag">Dépannage informatique · Assemblage PC · Maintenance · Sécurité · Sauvegardes</p>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <ul>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#tarifs">Tarifs</a></li>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Légal</h4>
+      <ul>
+        <li><a href="legal.html">Mentions légales</a></li>
+        <li><a href="privacy.html">Politique de confidentialité</a></li>
+        <li><a href="cgv.html">CGV</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li>Email : montagespanthere@gmail.com</li>
+        <li>Tél : +33 7 56 95 73 55</li>
+        <li>Zone : Bassin d’Arcachon & alentours</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2025 Panthère Informatique. Tous droits réservés.</span>
+    <span class="tag">SIREN/SIRET : 981 498 090 / 981 498 090 00019 · TVA : FR15981498090</span>
+  </div>
+</footer>
+</body>
+</html>
