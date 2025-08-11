@@ -1,192 +1,336 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Réparation & dépannage informatique — Panthère Informatique</title>
-  <meta name="description" content="Dépannage et réparation d'ordinateurs PC/Mac. Interventions rapides, devis clair, satisfaction garantie."/>
-  <meta property="og:title" content="Réparation & dépannage informatique — Panthère Informatique"/>
-  <meta property="og:description" content="Dépannage et réparation d'ordinateurs PC/Mac. Interventions rapides, devis clair, satisfaction garantie."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:image" content="assets/img/logo.svg"/>
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml"/>
-  <link rel="stylesheet" href="assets/css/style.css"/>
-  <script defer src="assets/js/main.js"></script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LocalBusiness", "name": "Panthère Informatique", "image": "assets/img/logo.svg", "description": "Réparation d'ordinateurs, assistance et dépannage informatique à domicile et en atelier. PC, Mac, portables et tours.", "address": {"@type": "PostalAddress", "streetAddress": "4 A Rue Gustave Eiffel, 33380 Mios", "addressLocality": "Mios", "postalCode": "33380", "addressCountry": "FR"}, "email": "montagespanthere@gmail.com", "telephone": "+33 7 56 95 73 55", "url": "https://panthere-informatique.fr", "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "08:00", "closes": "20:00"}}</script>
-<script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://panthere-informatique.fr/index.html"}]}
-</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Piano MIDI – Portable (1 fichier)</title>
+  <style>
+    :root {
+      --bg:#0b0b0f; --panel:#1b1b22; --muted:#2a2a33; --text:#f3f4f6; --sub:#c7cad1;
+      --emerald:#10b981; --indigo:#6366f1; --amber:#f59e0b; --rose:#f43f5e;
+    }
+    * { box-sizing: border-box; }
+    html, body { height:100%; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; }
+    .container { max-width:1100px; margin:0 auto; padding:16px; }
+    .row { display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; }
+    h1 { font-size:28px; margin:0 0 8px; }
+    button, .btn { border:0; background:var(--panel); color:var(--text); padding:8px 12px; border-radius:12px; cursor:pointer; }
+    button:hover { filter:brightness(1.1); }
+    .btn-emerald{ background:var(--emerald); color:#04110c; }
+    .btn-indigo{ background:var(--indigo); }
+    .btn-amber{ background:var(--amber); color:#1b1302; }
+    .btn-rose{ background:var(--rose); }
+    select, input[type=range] { background:var(--panel); color:var(--text); border:1px solid var(--muted); border-radius:10px; padding:6px 8px; }
+    .controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .panel { background:rgba(0,0,0,.35); border:1px solid var(--muted); border-radius:16px; }
+    .notes { height:380px; overflow:hidden; }
+    .kbd { position:relative; user-select:none; }
+    .kbd .whites { display:flex; border:1px solid var(--muted); border-top:0; border-radius:0 0 16px 16px; overflow:hidden; }
+    .kbd .white { flex:1 1 0; height:200px; background:#fff; color:#000; border-right:1px solid var(--muted); position:relative; }
+    .kbd .white:last-child { border-right:0; }
+    .kbd .white.down { background:#ebebeb; }
+    .kbd .black-wrap { pointer-events:none; position:absolute; left:0; right:0; top:0; height:120px; }
+    .kbd .black { pointer-events:auto; position:absolute; width:5.5%; height:100%; background:#000; border-radius:0 0 10px 10px; }
+    .kbd .black.down { background:#444; }
+    .tag { position:absolute; left:6px; bottom:6px; font-size:11px; padding:2px 4px; border-radius:6px; background:rgba(255,255,255,.85); color:#000; }
+    .tag.black { background:rgba(0,0,0,.75); color:#fff; }
+    .remap { position:absolute; right:6px; top:6px; font-size:10px; padding:2px 6px; border-radius:8px; background:#0d0d12; color:#fff; opacity:.75; }
+    .remap:hover { opacity:1; }
+    .help { padding:14px; }
+    details { background:rgba(255,255,255,.03); border:1px solid var(--muted); border-radius:12px; }
+    summary { cursor:pointer; padding:8px 12px; }
+    .overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:50; }
+    .overlay .card { background:#14141a; border:1px solid var(--muted); padding:20px; border-radius:14px; max-width:520px; text-align:center; }
+  </style>
+  <!-- React + ReactDOM + Babel (pour JSX dans le navigateur) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Tone.js & @tonejs/midi -->
+  <script src="https://unpkg.com/tone/build/Tone.js"></script>
+  <script src="https://unpkg.com/@tonejs/midi/dist/Midi.js"></script>
 </head>
-
 <body>
+  <div id="root"></div>
 
-<nav>
-  <div class="container nav-inner">
-    <a href="index.html" class="logo" aria-label="Accueil">
-      <img src="assets/img/logo.svg" alt="" width="34" height="34"/>
-      <span class="logo-title">Panthère Informatique</span>
-    </a>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links">☰</button>
-    <div id="nav-links" class="nav-links" role="navigation" aria-label="Navigation principale">
-      <button class="theme-toggle" type="button"><span class="icon-wrap"><span class="sun">☀️</span><span class="moon">🌙</span></span><span class="theme-label" style="display:none">Toggle theme</span></button>
-      <a href="index.html#services">Services</a>
-      <a href="index.html#tarifs">Tarifs</a>
-      <a href="about.html">À propos</a>
-      <a href="contact.html" class="btn">Demander un devis</a>
-    </div>
-  </div>
-</nav>
+  <script type="text/babel">
+    const {useState, useEffect, useMemo, useRef, useCallback} = React;
+    const NOTE_RANGE = { first: 48, last: 84 };
+    const WHITE_KEYS = [0,2,4,5,7,9,11];
+    const KEYBOARD_DEFAULT = ["z","s","x","d","c","v","g","b","h","n","j","m",",","l",".",";","/","1","q","2","w","3","e","r","5","t","6","y","7","u","i","9","o","0","p","[","]"];
+    const midiToName = (m)=>{ const names=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]; return names[m%12]+(Math.floor(m/12)-1); };
+    const isWhite = (m)=> WHITE_KEYS.includes(m%12);
+    const buildNotes = (a,b)=> Array.from({length:b-a+1},(_,i)=>a+i);
 
-<header class="hero">
-  <div class="container hero-inner">
-    <div class="hero-card reveal-slow reveal">
-      <span class="badge">⚡ Intervention rapide · Devis clair</span>
-      <h1>Réparation d’ordinateur & assistance <span style="color:var(--primary)">pro</span></h1>
-      <p class="lead">Pannes, lenteurs, virus, écran cassé, sauvegardes, mise à niveau… Panthère Informatique remet votre machine en forme avec un service soigné et des conseils clairs.</p>
-      <div style="display:flex; gap:12px; margin-top:16px">
-        <a class="btn" href="contact.html">Demander un devis</a>
-        <a class="btn secondary" href="#services">Voir les services</a>
-      </div>
-      <div class="grid-3" style="margin-top:22px">
-        <div class="kpi reveal"><div class="icon">🛠️</div><div><strong>Réparations PC/Mac</strong><div class="tag">Toutes marques</div></div></div>
-        <div class="kpi reveal"><div class="icon">👨‍💻</div><div><strong>À domicile & atelier</strong><div class="tag">Flexibilité</div></div></div>
-        <div class="kpi reveal"><div class="icon">🔒</div><div><strong>RGPD & sauvegardes</strong><div class="tag">Données protégées</div></div></div>
-      </div>
-    </div>
-    <img src="assets/img/hero.svg" alt="" style="width:100%; height:auto; border-radius:var(--radius-lg); border:1px solid var(--border)"/>
-  </div>
-</header>
+    function App(){
+      const [notes] = useState(()=>buildNotes(NOTE_RANGE.first, NOTE_RANGE.last));
+      const [mapping, setMapping] = useState(()=>{
+        try{ const s=localStorage.getItem('piano-keymap'); if(s) return JSON.parse(s);}catch{}
+        const o={}; buildNotes(NOTE_RANGE.first, NOTE_RANGE.last).forEach((m,i)=>o[m]=KEYBOARD_DEFAULT[i]||"");
+        return o;
+      });
+      const mappingRef = useRef(mapping); useEffect(()=>{mappingRef.current=mapping},[mapping]);
 
-<section id="services" class="container">
-  <h2>Services informatiques</h2>
-  <p class="section-lead">Diagnostic précis, réparations fiables et conseils pour faire durer votre matériel.</p>
-  <div class="features">
-    <div class="feature reveal"><img src="assets/img/service-1.svg" alt="" width="38" height="38"/><h3>Dépannage & nettoyage</h3><p>Résolution de pannes, suppression de virus, optimisation des performances, nettoyage système.</p></div>
-    <div class="feature reveal"><img src="assets/img/service-2.svg" alt="" width="38" height="38"/><h3>Réparations matérielles</h3><p>SSD, RAM, écran, clavier, batterie, carte mère… Remplacements soignés et pièces de qualité.</p></div>
-    <div class="feature reveal"><img src="assets/img/service-3.svg" alt="" width="38" height="38"/><h3>Sauvegardes & récupération</h3><p>Mise en place de sauvegardes, récupération de données (selon état du support), migration.</p></div>
-    <div class="feature reveal"><img src="assets/img/service-4.svg" alt="" width="38" height="38"/><h3>Installation & mise à niveau</h3><p>Windows, macOS, logiciels, mise à niveau SSD/RAM, pilote & sécurité.</p></div>
-    <div class="feature reveal"><img src="assets/img/service-5.svg" alt="" width="38" height="38"/><h3>Assemblage PC</h3><p>Conseil, configuration et montage PC sur mesure selon vos besoins et budget.</p></div>
-    <div class="feature reveal"><img src="assets/img/service-6.svg" alt="" width="38" height="38"/><h3>Entreprise</h3><p>Maintenance, sécurité, sauvegardes, conseils réseau et postes de travail.</p></div>
-  </div>
-</section>
+      const [pressed,setPressed] = useState(new Set());
+      const pressedRef = useRef(pressed); useEffect(()=>{pressedRef.current=pressed},[pressed]);
 
-<section id="tarifs" class="container">
-  <h2>Tarifs indicatifs</h2>
-  <p class="section-lead">Transparents et sans surprise. Un devis est fourni avant toute intervention.</p>
-  <div class="pricing">
-    <div class="price-card reveal">
-      <div class="tag">Dépannage</div>
-      <div class="price">49€</div>
-      <p>Diagnostic & petites interventions (1h)</p>
-      <ul>
-        <li>Optimisation</li>
-        <li>Nettoyage virus</li>
-        <li>Mises à jour</li>
-      </ul>
-    </div>
-    <div class="price-card reveal">
-      <div class="tag">Réparation</div>
-      <div class="price">89€</div>
-      <p>Main d’œuvre hors pièces</p>
-      <ul>
-        <li>Remplacement SSD/RAM</li>
-        <li>Clavier/écran</li>
-        <li>Réinstallation système</li>
-      </ul>
-    </div>
-    <div class="price-card reveal">
-      <div class="tag">Pro</div>
-      <div class="price">Sur devis</div>
-      <p>Contrats de maintenance & sauvegardes</p>
-      <ul>
-        <li>Parc informatique</li>
-        <li>Cybersécurité</li>
-        <li>Sauvegardes 3-2-1</li>
-      </ul>
-    </div>
-  </div>
-</section>
+      const synth = useMemo(()=> new Tone.PolySynth(Tone.Synth).toDestination(), []);
+      const [ready,setReady]=useState(false);
 
-<section class="container">
-  <h2>Avis clients</h2>
-  <p class="section-lead">La satisfaction avant tout.</p>
-  <div class="grid-3">
-    <div class="card reveal"><strong>Clara</strong><p>“Intervention rapide et efficace. Mon PC a retrouvé une seconde vie !”</p></div>
-    <div class="card reveal"><strong>Yanis</strong><p>“Super conseil pour l’achat d’un PC sur mesure. Montage propre, nickel.”</p></div>
-    <div class="card reveal"><strong>Marc</strong><p>“Récupération de données réussie, un grand merci.”</p></div>
-  </div>
-</section>
+      const [midiData, setMidiData] = useState(null);
+      const [scheduled, setScheduled] = useState([]);
+      const [isPlaying, setIsPlaying] = useState(false);
+      const [pixelsPerSecond, setPixelsPerSecond] = useState(120);
+      const [trackIndex, setTrackIndex] = useState('all');
 
-<section class="container">
-  <h2>FAQ</h2>
-  <div class="faq-item reveal">
-    <button aria-expanded="false" class="btn secondary">Combien de temps dure une réparation ?</button>
-    <p style="display:none">La plupart des interventions se font sous 24–72h selon la disponibilité des pièces.</p>
-  </div>
-  <div class="faq-item reveal">
-    <button aria-expanded="false" class="btn secondary">Intervenez-vous à domicile ?</button>
-    <p style="display:none">Oui, sur le Bassin d’Arcachon. Des frais de déplacement peuvent s’appliquer.</p>
-  </div>
-  <div class="faq-item reveal">
-    <button aria-expanded="false" class="btn secondary">Mes données sont-elles en sécurité ?</button>
-    <p style="display:none">Nous appliquons les bonnes pratiques RGPD et procédons à des sauvegardes avant toute opération risquée.</p>
-  </div>
-</section>
+      const canvasRef = useRef(null);
 
+      const ensureAudio = async ()=>{
+        if (Tone.getContext().state !== 'running') await Tone.start();
+        setReady(true);
+      };
 
-<section class="container">
-  <h2>Horaires</h2>
-  <div class="card reveal"><p><strong>Tous les jours — 08:00 → 20:00</strong></p></div>
-</section>
+      const noteOn = useCallback((midi)=>{
+        const now = Tone.now();
+        synth.triggerAttack(Tone.Frequency(midi,'midi'), now);
+        setPressed(prev=> new Set(prev).add(midi));
+      },[synth]);
 
-<section class="cta">
-  <div class="container" style="display:flex; flex-direction:column; gap:14px; align-items:flex-start; padding: 42px 0">
-    <h2>Un souci avec votre ordinateur ?</h2>
-    <p class="section-lead">Expliquez le problème et obtenez un devis gratuit.</p>
-    <a class="btn" href="contact.html">Contact rapide</a>
-  </div>
-</section>
+      const noteOff = useCallback((midi)=>{
+        synth.triggerRelease(Tone.Frequency(midi,'midi'));
+        setPressed(prev=>{ const s=new Set(prev); s.delete(midi); return s; });
+      },[synth]);
 
+      useEffect(()=>{
+        const down = (e)=>{
+          if(!ready) return;
+          const tag = document.activeElement?.tagName?.toLowerCase();
+          if(tag==='input'||tag==='textarea') return;
+          const entry = Object.entries(mappingRef.current).find(([,key])=> key && key.toLowerCase()===e.key.toLowerCase());
+          if(entry){ const midi=Number(entry[0]); if(!pressedRef.current.has(midi)) noteOn(midi); e.preventDefault(); }
+        };
+        const up = (e)=>{
+          const entry = Object.entries(mappingRef.current).find(([,key])=> key && key.toLowerCase()===e.key.toLowerCase());
+          if(entry){ const midi=Number(entry[0]); noteOff(midi); e.preventDefault(); }
+        };
+        window.addEventListener('keydown',down);
+        window.addEventListener('keyup',up);
+        return ()=>{ window.removeEventListener('keydown',down); window.removeEventListener('keyup',up); };
+      },[ready,noteOn,noteOff]);
 
-<footer>
-  <div class="container footer-grid">
-    <div>
-      <div class="logo">
-        <img src="assets/img/logo.svg" alt="" width="28" height="28"/>
-        <strong>Panthère Informatique</strong>
-      </div>
-      <p class="tag">Dépannage informatique · Assemblage PC · Maintenance · Sécurité · Sauvegardes</p>
-    </div>
-    <div>
-      <h4>Pages</h4>
-      <ul>
-        <li><a href="index.html#services">Services</a></li>
-        <li><a href="index.html#tarifs">Tarifs</a></li>
-        <li><a href="about.html">À propos</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Légal</h4>
-      <ul>
-        <li><a href="legal.html">Mentions légales</a></li>
-        <li><a href="privacy.html">Politique de confidentialité</a></li>
-        <li><a href="cgv.html">CGV</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Contact</h4>
-      <ul>
-        <li>Email : montagespanthere@gmail.com</li>
-        <li>Tél : +33 7 56 95 73 55</li>
-        <li>Zone : Bassin d’Arcachon & alentours</li>
-      </ul>
-    </div>
-  </div>
-  <div class="container footer-bottom">
-    <span>© 2025 Panthère Informatique. Tous droits réservés.</span>
-    <span class="tag">SIREN/SIRET : 981 498 090 / 981 498 090 00019 · TVA : FR15981498090</span>
-  </div>
-</footer>
+      const [remappingMidi, setRemappingMidi] = useState(null);
+      useEffect(()=>{
+        if(remappingMidi==null) return;
+        const handler = (e)=>{
+          e.preventDefault();
+          const newKey = e.key.length===1 ? e.key : '';
+          setMapping(prev=>{
+            const clone={...prev};
+            for(const m in clone){ if(clone[m] && clone[m].toLowerCase()===newKey.toLowerCase()) clone[m]=''; }
+            clone[remappingMidi]=newKey;
+            try{localStorage.setItem('piano-keymap', JSON.stringify(clone));}catch{}
+            return clone;
+          });
+          setRemappingMidi(null);
+        };
+        window.addEventListener('keydown', handler, {once:true});
+        return ()=> window.removeEventListener('keydown', handler);
+      },[remappingMidi]);
+
+      const onSelectMidi = async (file)=>{
+        if(!file) return;
+        const ab = await file.arrayBuffer();
+        const midi = new Midi(ab);
+        setMidiData(midi);
+        const all=[];
+        midi.tracks.forEach((track,idx)=>{
+          track.notes.forEach(n=> all.push({track:idx, time:n.time, duration:n.duration, midi:n.midi, velocity:n.velocity}));
+        });
+        all.sort((a,b)=>a.time-b.time);
+        setScheduled(all);
+        setTrackIndex('all');
+        Tone.Transport.seconds = 0;
+      };
+
+      const schedulePlayback = ()=>{
+        if(!midiData) return;
+        Tone.Transport.cancel();
+        const events = (trackIndex==='all')? scheduled : scheduled.filter(n=>n.track===Number(trackIndex));
+        events.forEach(n=>{
+          Tone.Transport.schedule((time)=>{
+            synth.triggerAttackRelease(Tone.Frequency(n.midi,'midi'), n.duration, time, n.velocity);
+            flashKey(n.midi, time, n.duration);
+          }, n.time);
+        });
+      };
+
+      const flashKey = (midi, time, dur)=>{
+        setTimeout(()=> setPressed(prev=> new Set(prev).add(midi)), Math.max(0,(time - Tone.now())*1000));
+        setTimeout(()=> setPressed(prev=>{ const s=new Set(prev); s.delete(midi); return s; }), Math.max(0,(time - Tone.now() + dur)*1000));
+      };
+
+      const play = async ()=>{ await ensureAudio(); schedulePlayback(); await Tone.start(); Tone.Transport.start(); setIsPlaying(true); };
+      const pause = ()=>{ Tone.Transport.pause(); setIsPlaying(false); };
+      const stop  = ()=>{ Tone.Transport.stop(); Tone.Transport.seconds = 0; setIsPlaying(false); };
+
+      useEffect(()=>{
+        let raf;
+        const ctx = canvasRef.current?.getContext('2d');
+        const render = ()=>{
+          raf = requestAnimationFrame(render);
+          if(!ctx) return;
+          const canvas = ctx.canvas;
+          const parent = canvas.parentElement;
+          const dpr = window.devicePixelRatio || 1;
+          const width = parent.clientWidth;
+          const height = parent.clientHeight;
+          if(canvas.width!==width*dpr || canvas.height!==height*dpr){
+            canvas.width = width*dpr; canvas.height = height*dpr;
+            canvas.style.width = width+'px'; canvas.style.height = height+'px';
+            ctx.setTransform(dpr,0,0,dpr,0,0);
+          }
+          ctx.clearRect(0,0,width,height);
+          const whiteNotes = notes.filter(isWhite);
+          const keyWidth = width / whiteNotes.length;
+          whiteNotes.forEach((_,i)=>{
+            ctx.fillStyle = i%2 ? '#0b1220' : '#111827';
+            ctx.fillRect(i*keyWidth,0,keyWidth-1,height);
+          });
+          const nowSec = Tone.Transport.seconds;
+          const speed = pixelsPerSecond;
+          const startWindow = nowSec - 1;
+          const endWindow = nowSec + height/speed + 2;
+          const events = (trackIndex==='all')? scheduled : scheduled.filter(n=>n.track===Number(trackIndex));
+          const whiteIndexOf = (m)=> whiteNotes.indexOf(isWhite(m)?m:m-1);
+          events.forEach(n=>{
+            if(n.time > endWindow || n.time + n.duration < startWindow) return;
+            const y0 = (n.time - nowSec) * speed;
+            const h  = Math.max(4, n.duration * speed);
+            const idx = whiteIndexOf(n.midi);
+            if(idx<0) return;
+            const x = idx*keyWidth + (isWhite(n.midi)?0:keyWidth*0.25);
+            const w = isWhite(n.midi) ? keyWidth*0.9 : keyWidth*0.5;
+            const hue = (n.midi % 12) * (360/12);
+            ctx.fillStyle = `hsl(${hue},70%,55%)`;
+            ctx.globalAlpha = 0.9;
+            ctx.fillRect(x, height - y0 - h, w, h);
+            ctx.globalAlpha = 1;
+          });
+          ctx.strokeStyle = '#ffffff';
+          ctx.beginPath(); ctx.moveTo(0,height-2); ctx.lineTo(width,height-2); ctx.stroke();
+        };
+        raf = requestAnimationFrame(render);
+        return ()=> cancelAnimationFrame(raf);
+      },[notes, pixelsPerSecond, scheduled, trackIndex]);
+
+      const whiteKeys = notes.filter(isWhite);
+      const blackKeyFor = (base)=>{
+        const pc = base % 12;
+        if(pc===0) return base+1; // C#
+        if(pc===2) return base+1; // D#
+        if(pc===5) return base+1; // F#
+        if(pc===7) return base+1; // G#
+        if(pc===9) return base+1; // A#
+        return null;
+      };
+
+      return (
+        <div className="container">
+          <div className="row">
+            <div style={{flex:'1 1 auto'}}>
+              <h1>Piano en ligne + Chute de notes (MIDI)</h1>
+            </div>
+            <div className="controls">
+              <button className="btn-emerald" onClick={ensureAudio}>Activer l'audio</button>
+              <label className="btn btn-indigo" style={{cursor:'pointer'}}>
+                Importer un MIDI
+                <input type="file" accept=".mid,.midi" style={{display:'none'}}
+                       onChange={(e)=> onSelectMidi(e.target.files?.[0]) } />
+              </label>
+              <label className="btn" style={{display:'inline-flex', alignItems:'center', gap:8}}>
+                Vitesse
+                <input type="range" min="60" max="300" value={pixelsPerSecond}
+                       onChange={(e)=> setPixelsPerSecond(Number(e.target.value)) } />
+              </label>
+            </div>
+          </div>
+
+          {midiData && (
+            <div className="row" style={{alignItems:'center', marginTop:8}}>
+              <span style={{opacity:.8}}>Pistes :</span>
+              <select value={trackIndex} onChange={(e)=> setTrackIndex(e.target.value)}>
+                <option value="all">Toutes</option>
+                {midiData.tracks.map((t,i)=> <option key={i} value={i}>{`Piste ${i+1} – ${t.name || '(sans nom)'}`}</option>)}
+              </select>
+              <div style={{marginLeft:'auto', display:'flex', gap:8}}>
+                {!isPlaying ? (
+                  <button className="btn-emerald" onClick={play}>Lecture</button>
+                ) : (
+                  <button className="btn-amber" onClick={pause}>Pause</button>
+                )}
+                <button className="btn-rose" onClick={stop}>Stop</button>
+              </div>
+            </div>
+          )}
+
+          <div className="panel notes" style={{marginTop:12}}>
+            <canvas ref={canvasRef} style={{display:'block', width:'100%', height:'100%'}} />
+          </div>
+
+          <div className="kbd" style={{marginTop:16}}>
+            <div className="whites">
+              {whiteKeys.map((midi)=>(
+                <div key={midi}
+                  className={'white'+(pressed.has(midi)?' down':'')}
+                  onMouseDown={()=>{ ensureAudio(); noteOn(midi); }}
+                  onMouseUp={()=> noteOff(midi) }
+                  onMouseLeave={()=> pressed.has(midi) && noteOff(midi) }
+                >
+                  <div className="tag">{midiToName(midi)} {mapping[midi]?`· ${mapping[midi]}`:''}</div>
+                  <button className="remap" onClick={(e)=>{e.stopPropagation(); setRemappingMidi(midi);}}>Remap</button>
+                </div>
+              ))}
+            </div>
+            <div className="black-wrap">
+              {whiteKeys.map((base,i)=>{
+                const b = blackKeyFor(base);
+                if(!b || b>NOTE_RANGE.last) return null;
+                const leftPercent = (i + 1) * (100 / whiteKeys.length) - (100 / whiteKeys.length) * 0.35;
+                const isDown = pressed.has(b);
+                return (
+                  <div key={b}
+                    className={'black'+(isDown?' down':'')}
+                    style={{ left: leftPercent + '%'}}
+                    onMouseDown={(e)=>{ e.stopPropagation(); ensureAudio(); noteOn(b); }}
+                    onMouseUp={(e)=>{ e.stopPropagation(); noteOff(b); }}
+                    onMouseLeave={(e)=>{ e.stopPropagation(); isDown && noteOff(b); }}
+                  >
+                    <div className="tag black">{midiToName(b)} {mapping[b]?`· ${mapping[b]}`:''}</div>
+                    <button className="remap" onClick={(e)=>{ e.stopPropagation(); setRemappingMidi(b); }}>Remap</button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <details className="help" style={{marginTop:12}}>
+            <summary>Aide</summary>
+            <ul>
+              <li>Active l'audio puis joue au clic ou au clavier (touches remappables).</li>
+              <li>Importe un fichier .mid pour la chute de notes + lecture synchronisée.</li>
+              <li>Ajuste la vitesse avec le curseur « Vitesse ».</li>
+              <li>Choisis une piste spécifique ou « Toutes ».</li>
+              <li>La configuration clavier est sauvegardée localement.</li>
+            </ul>
+          </details>
+
+          <div style={{textAlign:"center", opacity:.65, fontSize:12, padding:"20px 0"}}>Fait avec React, Tone.js et @tonejs/midi. Aucun envoi de fichier – tout reste en local.</div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
 </body>
 </html>

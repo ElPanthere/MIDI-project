@@ -1,0 +1,23 @@
+{
+  "name": "piano-midi-site",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tone": "^14.8.49",
+    "@tonejs/midi": "^2.0.28"
+  },
+  "devDependencies": {
+    "vite": "^5.3.0",
+    "tailwindcss": "^3.4.7",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39"
+  }
+}
